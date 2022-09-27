@@ -1,38 +1,23 @@
 import * as React from "react"
-import {
-  ChakraProvider,
-  Box,
-  Text,
-  Link,
-  VStack,
-  Code,
-  Grid,
-  theme,
-} from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
+import { Box, ChakraProvider, Code, Flex, Grid, Link, Spinner, theme, VStack } from "@chakra-ui/react"
+import reducers from "./reducers"
+import { Provider } from "react-redux"
+import { PersistGate } from "redux-persist/integration/react"
 
-export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
-          </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
-        </VStack>
-      </Grid>
-    </Box>
-  </ChakraProvider>
+const RootApp = () => (
+  <Flex align='stretch'>
+
+  </Flex>
 )
+
+export const App = () => {
+  const { store, persistor } = reducers();
+
+  return <ChakraProvider theme={theme}>
+    <Provider store={store}>
+      <PersistGate persistor={persistor} loading={<Spinner size='xl' />}>
+        <RootApp />
+      </PersistGate>
+    </Provider>
+  </ChakraProvider>
+}
