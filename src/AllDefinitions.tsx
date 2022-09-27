@@ -13,8 +13,9 @@ export default function AllDefinitions({ indices, plane }: AllDefinitionsProps):
     return <VStack
         textAlign="right"
         align="end"
-        margin="3"
-        flex="0.5"
+        p="3"
+        maxW="90vw"
+        minW="min-content"
         overflowY="auto"
         divider={<StackDivider />}
     >

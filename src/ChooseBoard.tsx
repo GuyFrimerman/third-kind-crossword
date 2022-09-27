@@ -9,12 +9,14 @@ export default function ChooseBoard(): JSX.Element {
     const dispatch = useAppDispatch();
     return <Container
         p="4"
-        boxShadow="lg">
+        boxShadow="lg"
+        dir="rtl"
+        >
 
         <FormControl>
             <Flex
                 minW="100%"
-                flexDir="row-reverse">
+                flexDir="row">
                 <FormLabel fontSize="2xl">מישור</FormLabel>
                 <RadioGroup
                     value={plane}
@@ -24,7 +26,7 @@ export default function ChooseBoard(): JSX.Element {
                 >
                     <VStack
                         flex="1"
-                        flexDir="row-reverse"
+                        flexDir="row"
                         justify="space-evenly"
                         dir="rtl"
                         align="end"
@@ -38,7 +40,7 @@ export default function ChooseBoard(): JSX.Element {
             <StackDivider />
             <Flex
                 minW="100%"
-                flexDir="row-reverse">
+                flexDir="row">
                 <FormLabel fontSize="2xl" pl="7">שכבה</FormLabel>
                 <Slider
                     id="layer"

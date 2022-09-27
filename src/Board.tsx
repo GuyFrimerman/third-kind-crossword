@@ -1,6 +1,7 @@
 import React from "react";
 import { AspectRatio, Box, Editable, EditableInput, EditablePreview, Flex, SimpleGrid } from "@chakra-ui/react";
 import { BOARD_SIZE, IndexedBoard, IndexedCell, IndexedLegalCell } from "./data";
+import { Stream } from "stream";
 
 type BoardCellProps = IndexedCell & {
     onChange: (_: IndexedLegalCell) => void
@@ -14,12 +15,14 @@ const BoardCell = ({ index, value, onChange }: BoardCellProps): JSX.Element => {
     >
         {value === null ?
             <Box /> :
-            <Flex
-                direction="column"
-                justifyItems="stretch"
-                textAlign="center"
-            >
-                <Box ml="1" textAlign="left" fontSize="sm">
+            <Box textAlign="center" >
+                <Box
+                    ml={{ sm: "1px", base: "1" }}
+                    textAlign="left"
+                    fontSize={["8px", "small"]}
+                    position='absolute'
+                    top="0"
+                    left="0">
                     {index + 1}
                 </Box>
                 <Editable
@@ -27,12 +30,14 @@ const BoardCell = ({ index, value, onChange }: BoardCellProps): JSX.Element => {
                     placeholder="__"
                     onSubmit={value => onChange({ index, value })}
                     flex="1"
-                    fontSize="xx-large"
+                    margin="auto"
+                    position="absolute"
+                    fontSize={{ sm: "2xl", base: "2xl" }}
                 >
                     <EditablePreview id={`boardCell${index}`} />
                     <EditableInput maxLength={1} />
                 </Editable>
-            </Flex>
+            </Box>
         }
     </AspectRatio>
 };
@@ -45,12 +50,16 @@ type BoardProps = {
 
 export default function Board({ setCube, currentBoard }: BoardProps): JSX.Element {
     return (
-        <SimpleGrid
-            dir="rtl"
-            columns={BOARD_SIZE}
-            w="40vw"
-        >
-            {currentBoard.map((props) => <BoardCell {...props} key={props.index} onChange={setCube} />)}
-        </SimpleGrid>
+            <SimpleGrid
+                dir="rtl"
+                columns={BOARD_SIZE}
+                minW="40vw"
+                maxW="90vw"
+                flex="1"
+                mx="auto"
+                style={{aspectRatio: 1}}
+            >
+                {currentBoard.map((props) => <BoardCell {...props} key={props.index} onChange={setCube} />)}
+            </SimpleGrid>
     );
 }

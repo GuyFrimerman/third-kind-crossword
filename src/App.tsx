@@ -1,5 +1,5 @@
 import * as React from "react"
-import { ChakraProvider, Divider, Flex, Heading, Spinner, StackDivider, theme } from "@chakra-ui/react"
+import { Box, ChakraProvider, Divider, Flex, Heading, Spinner, StackDivider, theme, VStack } from "@chakra-ui/react"
 import reducers, { useAppDispatch, useBoard } from "./reducers"
 import { Provider, useSelector } from "react-redux"
 import { setCube } from "./reducers/board"
@@ -20,40 +20,35 @@ const RootApp = () => {
 
   return (
     <Flex
-      w="100vw"
       className="app"
       id="root"
       direction="column"
-      align="stretch"
+      maxW="100vw"
+      justify="stretch"
     >
       <Heading
-        fontSize="4xl"
+        fontSize={["2xl", "4xl"]}
         as="h1"
         textAlign="center"
+        maxW="100%"
         dir="rtl"
       >
         תשבץ מהסוג השלישי
         <Info />
       </Heading>
       <Flex
-        direction="row-reverse"
-        justify="space-evenly"
-        flex="1"
+        dir="rtl"
+        direction="row"
+        justify="space-around"
+        align="top"
+        wrap="wrap"
+        mt="15"
         maxH="90vh"
       >
-        <Flex
-        align= "stretch"
-        flex= "1"
-        padding= "10"
-        direction= "column"
-        maxW= "45vw"
-        mx= "10"
-        >
+        <Box minW={["80vw", "45vw"]} mx="10">
           <Board currentBoard={currentBoard} setCube={(v: IndexedLegalCell) => dispatch(setCube(v))} />
-          <StackDivider />
           <ChooseBoard />
-        </Flex>
-        <Divider orientation="vertical" />
+        </Box>
         <AllDefinitions indices={indices} plane={plane} />
       </Flex>
     </Flex>
