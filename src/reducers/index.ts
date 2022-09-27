@@ -1,4 +1,4 @@
-import { configureStore, Store } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { persistCombineReducers, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
@@ -21,7 +21,7 @@ const store = configureStore({
     middleware: getDefaultMiddleware => getDefaultMiddleware().concat(definitionsApi.middleware)
 });
 
-export default () => {
+export default function reducers() {
     const persistor = persistStore(store);
     return {
         persistor,

@@ -1,5 +1,5 @@
 import { Flex, FormControl, FormLabel, StackDivider, Switch, VStack } from "@chakra-ui/react"
-import { useState } from "react";
+import React, { useState } from "react";
 import { Plane } from "./data"
 import Definitions from "./Definitions";
 
@@ -8,7 +8,7 @@ type AllDefinitionsProps = {
     plane: Plane,
 }
 
-export default ({ indices, plane }: AllDefinitionsProps) => {
+export default function AllDefinitions({ indices, plane }: AllDefinitionsProps): JSX.Element {
     const [onlyVisible, setVisible] = useState(false);
     return <VStack
         textAlign="right"
@@ -28,29 +28,25 @@ export default ({ indices, plane }: AllDefinitionsProps) => {
             </FormLabel>
             <Switch
                 onChange={() => setVisible(!onlyVisible)}
-                isChecked={onlyVisible}
-            />
+                isChecked={onlyVisible} />
         </FormControl>
         <Definitions
-            header= "אופקי"
-            name= "X"
+            header="אופקי"
+            name="X"
             onlyVisible={onlyVisible}
             indices={indices}
-            plane={plane}
-            />
+            plane={plane} />
         <Definitions
-            header= "אנכי"
-            name= "Y"
+            header="אנכי"
+            name="Y"
             onlyVisible={onlyVisible}
             indices={indices}
-            plane={plane}
-            />
+            plane={plane} />
         <Definitions
-            header= "כלפי מטה"
-            name= "Z"
+            header="כלפי מטה"
+            name="Z"
             onlyVisible={onlyVisible}
             indices={indices}
-            plane={plane}
-            />
+            plane={plane} />
     </VStack>;
 }

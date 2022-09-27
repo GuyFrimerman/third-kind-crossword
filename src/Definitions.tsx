@@ -1,3 +1,4 @@
+import React from "react";
 import { ChevronLeftIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Box, Heading, Spinner, Text } from "@chakra-ui/react";
 import { Axis, Plane } from "./data"
@@ -10,6 +11,7 @@ type DefinitionsProps = {
     indices: number[]
     plane: Plane
 };
+
 const SingleDefinition = ({ definition, start }: Definition) => (
     <Text
         fontSize="sm"
@@ -18,10 +20,10 @@ const SingleDefinition = ({ definition, start }: Definition) => (
         {definition}
     </Text>)
 
-export default ({ header, name, onlyVisible, indices, plane }: DefinitionsProps) => {
-    const { data, error, isLoading } = useGetDefinitionsQuery(name);
+export default function Definitions({ header, name, onlyVisible, indices, plane }: DefinitionsProps) : JSX.Element {
+    const { data, isLoading } = useGetDefinitionsQuery(name);
     const [horizontal, vertical] = Plane[plane];
-    let icon = undefined;
+    let icon: JSX.Element | undefined = undefined;
 
     switch (name) {
         case horizontal:
@@ -48,8 +50,8 @@ export default ({ header, name, onlyVisible, indices, plane }: DefinitionsProps)
             {isLoading ?
                 <Spinner /> :
                 data?.filter(
-                    ({ start }) => onlyVisible || indices.includes(start - 1) && plane != Axis[name] as number
-            ).map((v: Definition) => <SingleDefinition {...v} />)
+                    ({ start }) => onlyVisible || (indices.includes(start - 1) && plane !== Axis[name] as number)
+                ).map((v: Definition) => <SingleDefinition {...v} />)
             }
         </Box>
     </Box>;

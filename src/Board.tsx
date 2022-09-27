@@ -1,10 +1,11 @@
+import React from "react";
 import { AspectRatio, Box, Editable, EditableInput, EditablePreview, Flex, SimpleGrid } from "@chakra-ui/react";
 import { BOARD_SIZE, IndexedBoard, IndexedCell, IndexedLegalCell } from "./data";
 
 type BoardCellProps = IndexedCell & {
     onChange: (_: IndexedLegalCell) => void
 }
-const BoardCell = ({ index, value, onChange }: BoardCellProps) => {
+const BoardCell = ({ index, value, onChange }: BoardCellProps): JSX.Element => {
     return <AspectRatio
         bg={value === null ? 'black' : 'inherit'}
         ratio={1}
@@ -42,12 +43,14 @@ type BoardProps = {
     currentBoard: IndexedBoard,
 }
 
-export default ({ setCube, currentBoard }: BoardProps) => (
-    <SimpleGrid
-        dir="rtl"
-        columns={BOARD_SIZE}
-        w="40vw"
-    >
-        {currentBoard.map((props) => <BoardCell {...props} key={props.index} onChange={setCube} />)}
-    </SimpleGrid>
-)
+export default function Board({ setCube, currentBoard }: BoardProps): JSX.Element {
+    return (
+        <SimpleGrid
+            dir="rtl"
+            columns={BOARD_SIZE}
+            w="40vw"
+        >
+            {currentBoard.map((props) => <BoardCell {...props} key={props.index} onChange={setCube} />)}
+        </SimpleGrid>
+    );
+}

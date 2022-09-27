@@ -2,9 +2,9 @@ import React from "react";
 import { Container, FormControl, Flex, FormLabel, RadioGroup, VStack, Radio, StackDivider, SliderMark, SliderTrack, SliderThumb, Slider } from "@chakra-ui/react";
 import { BOARD_SIZE, Plane } from "./data";
 import { useAppDispatch } from "./reducers";
-import { PlaneString, setLayer, setPlane, useView } from "./reducers/view";
+import { setLayer, setPlane, useView } from "./reducers/view";
 
-export default () => {
+export default function ChooseBoard(): JSX.Element {
     const { layer, plane } = useView();
     const dispatch = useAppDispatch();
     return <Container

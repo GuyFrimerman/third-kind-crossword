@@ -1,14 +1,14 @@
 import * as React from "react"
-import { Box, ChakraProvider, Code, Divider, Flex, Grid, Heading, Link, Spinner, StackDivider, theme, VStack } from "@chakra-ui/react"
+import { ChakraProvider, Divider, Flex, Heading, Spinner, StackDivider, theme } from "@chakra-ui/react"
 import reducers, { useAppDispatch, useBoard } from "./reducers"
 import { Provider, useSelector } from "react-redux"
-import { PersistGate } from "redux-persist/integration/react"
 import { setCube } from "./reducers/board"
 import Info from "./Info"
 import { IndexedLegalCell } from "./data"
 import Board from "./Board"
 import ChooseBoard from "./ChooseBoard"
 import AllDefinitions from "./AllDefinitions"
+import { PersistGate } from "redux-persist/integration/react"
 
 const RootApp = () => {
   const {
@@ -65,9 +65,9 @@ export const App = () => {
 
   return <ChakraProvider theme={theme}>
     <Provider store={store}>
-      {/* <PersistGate persistor={persistor} loading={<Spinner size='xl' />}> */}
+      <PersistGate persistor={persistor} loading={<Spinner size='xl' />}>
         <RootApp />
-      {/* </PersistGate> */}
+      </PersistGate>
     </Provider>
   </ChakraProvider>
 }
