@@ -25,6 +25,7 @@ export default () => {
                         flex="1"
                         flexDir="row-reverse"
                         justify="space-evenly"
+                        dir="rtl"
                         align="end"
                     >
                         <Radio value={Plane.YZ}>אופקי</Radio>
