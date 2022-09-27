@@ -54,7 +54,7 @@ export default function Board({ setCube, currentBoard }: BoardProps): JSX.Elemen
                 columns={BOARD_SIZE}
                 minW="40vw"
                 maxW={["90vw", "45vw"]}
-                maxH={["30vh", "60vh"]}
+                maxH="60vh"
                 flex="1"
                 mx="auto"
                 style={{aspectRatio: 1}}
