@@ -8,7 +8,7 @@ export type Definition = {
 export const definitionsApi = createApi({
   reducerPath: 'definitions',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/definitions/'
+    baseUrl: './definitions/'
   }),
   endpoints: builder => ({
     getDefinitions: builder.query({
