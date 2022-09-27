@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Box, ChakraProvider, Code, Flex, Grid, Heading, Link, Spinner, theme, VStack } from "@chakra-ui/react"
+import { Box, ChakraProvider, Code, Divider, Flex, Grid, Heading, Link, Spinner, StackDivider, theme, VStack } from "@chakra-ui/react"
 import reducers, { useAppDispatch, useBoard } from "./reducers"
 import { Provider, useSelector } from "react-redux"
 import { PersistGate } from "redux-persist/integration/react"
@@ -7,6 +7,8 @@ import { setCube } from "./reducers/board"
 import Info from "./Info"
 import { IndexedLegalCell } from "./data"
 import Board from "./Board"
+import ChooseBoard from "./ChooseBoard"
+import AllDefinitions from "./AllDefinitions"
 
 const RootApp = () => {
   const {
@@ -48,7 +50,11 @@ const RootApp = () => {
         mx= "10"
         >
           <Board currentBoard={currentBoard} setCube={(v: IndexedLegalCell) => dispatch(setCube(v))} />
+          <StackDivider />
+          <ChooseBoard />
         </Flex>
+        <Divider orientation="vertical" />
+        <AllDefinitions indices={indices} plane={plane} />
       </Flex>
     </Flex>
   )
