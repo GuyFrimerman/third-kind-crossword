@@ -1,5 +1,4 @@
-import React from "react";
-import { FormControl, Flex, FormLabel, RadioGroup, VStack, Radio, StackDivider, SliderMark, SliderTrack, SliderThumb, Slider } from "@chakra-ui/react";
+import { Flex, FormLabel, VStack, Select, Spacer, Divider } from "@chakra-ui/react";
 import { BOARD_SIZE, Plane } from "./data";
 import { useAppDispatch } from "./reducers";
 import { setLayer, setPlane, useView } from "./reducers/view";
@@ -7,71 +6,46 @@ import { setLayer, setPlane, useView } from "./reducers/view";
 export default function ChooseBoard(): JSX.Element {
     const { layer, plane } = useView();
     const dispatch = useAppDispatch();
-    return <VStack
-        m="4"
-        dir="rtl"
-        divider={<StackDivider/>}
+    return <>
+        <Divider />
+        <Flex
+            direction="column"
+            mx="4"
+            my="2"
+            dir="rtl"
+            textAlign="left"
         >
-
-        <FormControl>
-            <Flex
-                minW="100%"
-                flexDir="row">
-                <FormLabel fontSize="2xl">מישור</FormLabel>
-                <RadioGroup
+            <Flex direction="row">
+                <FormLabel fontSize="sm">מישור</FormLabel>
+                <Spacer />
+                <Select
                     value={plane}
                     id="plane"
-                    flex={1}
-                    onChange={(v => dispatch(setPlane(v)))}
+                    dir="rtl"
+                    size="sm"
+                    textAlign="left"
+                    onChange={(v => dispatch(setPlane(v.target.value)))}
                 >
-                    <VStack
-                        flex="1"
-                        flexDir="row"
-                        justify="space-evenly"
-                        dir="rtl"
-                        align="end"
-                    >
-                        <Radio value={Plane.YZ}>אופקי</Radio>
-                        <Radio value={Plane.XZ}>אנכי</Radio>
-                        <Radio value={Plane.XY}>כלפי מטה</Radio>
-                    </VStack>
-                </RadioGroup>
+                    <option value={Plane.YZ}>אופקי</option>
+                    <option value={Plane.XZ}>אנכי</option>
+                    <option value={Plane.XY}>כלפי מטה</option>
+                </Select>
             </Flex>
-            <Flex
-                minW="100%"
-                flexDir="row">
-                <FormLabel fontSize="2xl" pl="7">שכבה</FormLabel>
-                <Slider
-                    id="layer"
-                    min={1}
-                    pt="7"
-                    max={BOARD_SIZE}
-                    step={1}
-                    isReversed={true}
+            <Flex direction="row">
+                <FormLabel fontSize="sm" pl="7">שכבה</FormLabel>
+                <Spacer />
+                <Select
                     value={layer}
-                    onChange={(v: number) => dispatch(setLayer(v))}>
-                    <SliderMark
-                        value={layer}
-                        textAlign="center"
-                        mt="-5"
-                        ml="-3.5"
-                        rounded="full"
-                        width="6"
-                        bgColor='black'
-                        color='white'
-                        zIndex={2}
-                    >{layer}</SliderMark>
-                    {Array.from(Array(BOARD_SIZE)).map((_, index) => <SliderMark
-                        value={index + 1}
-                        key={index}
-                        textAlign="center"
-                        mt="4"
-                        ml="-1.5"
-                    >{index + 1}</SliderMark>)}
-                    <SliderTrack />
-                    <SliderThumb/>
-                </Slider>
+                    id="plane"
+                    dir="rtl"
+                    size="sm"
+                    textAlign="left"
+                    onChange={(v => dispatch(setLayer(v.target.value)))}
+                >
+                    {Array.from(Array(BOARD_SIZE)).map((_, i) => <option key={i} value={i + 1}>{i + 1}</option>)}
+                </Select>
             </Flex>
-        </FormControl>
-    </VStack>;
+        </Flex>
+        <Divider />
+    </>;
 }
