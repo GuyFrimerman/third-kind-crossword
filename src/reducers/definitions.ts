@@ -1,5 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
+export type Definition = {
+  start: number,
+  definition: String
+}
+
 export const definitionsApi = createApi({
   reducerPath: 'definitions',
   baseQuery: fetchBaseQuery({
