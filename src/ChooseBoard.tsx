@@ -16,15 +16,16 @@ export default () => {
                 flexDir="row-reverse">
                 <FormLabel fontSize="2xl">מישור</FormLabel>
                 <RadioGroup
-                    value={Plane[plane]}
+                    value={plane}
                     id="plane"
                     flex={1}
-                    onChange={(v => dispatch(setPlane(v as unknown as PlaneString)))}
+                    onChange={(v => dispatch(setPlane(v)))}
                 >
                     <VStack
                         flex="1"
                         flexDir="row-reverse"
                         justify="space-evenly"
+                        align="end"
                     >
                         <Radio value={Plane.YZ}>אופקי</Radio>
                         <Radio value={Plane.XZ}>אנכי</Radio>
