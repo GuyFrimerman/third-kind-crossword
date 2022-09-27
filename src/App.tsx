@@ -1,5 +1,4 @@
-import * as React from "react"
-import { Box, ChakraProvider, Divider, Flex, Heading, Spinner, StackDivider, theme, VStack } from "@chakra-ui/react"
+import { Box, ChakraProvider, Flex, Heading, Spacer, Spinner, theme } from "@chakra-ui/react"
 import reducers, { useAppDispatch, useBoard } from "./reducers"
 import { Provider, useSelector } from "react-redux"
 import { setCube } from "./reducers/board"
@@ -37,13 +36,14 @@ const RootApp = () => {
         <Info />
       </Heading>
       <Flex
+        id="bigContainer"
         dir="rtl"
         direction="row"
-        justify="space-around"
+        justify="space-evenly"
         align="top"
         wrap="wrap"
         mt="15"
-        maxH="90vh"
+        h="90vh"
       >
         <Box minW={["80vw", "45vw"]} mx="10">
           <Board currentBoard={currentBoard} setCube={(v: IndexedLegalCell) => dispatch(setCube(v))} />

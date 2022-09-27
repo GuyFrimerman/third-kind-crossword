@@ -1,6 +1,6 @@
 import React from "react";
 import { ChevronLeftIcon, ChevronDownIcon } from "@chakra-ui/icons";
-import { Box, Heading, Spinner, Text } from "@chakra-ui/react";
+import { Container, Heading, Spinner, Text } from "@chakra-ui/react";
 import { Axis, Plane } from "./data"
 import { Definition, useGetDefinitionsQuery } from "./reducers/definitions";
 
@@ -35,24 +35,21 @@ export default function Definitions({ header, name, onlyVisible, indices, plane 
             break;
     }
 
-    return <Box
+    return <Container
         textAlign='right'
         dir="rtl"
-        m="5"
-    >
+        p="5"
+        style={{columnCount: "2"}}
+        >
+    
         <Heading fontSize="2xl">
             {header} {icon}
         </Heading>
-        <Box
-            style={{
-                columnCount: 2
-            }}>
-            {isLoading ?
-                <Spinner /> :
-                data?.filter(
-                    ({ start }) => onlyVisible || (indices.includes(start - 1) && plane !== Axis[name] as number)
-                ).map((v: Definition) => <SingleDefinition {...v} />)
-            }
-        </Box>
-    </Box>;
+        {isLoading ?
+            <Spinner /> :
+            data?.filter(
+                ({ start }) => onlyVisible || (indices.includes(start - 1) && plane !== Axis[name] as number)
+            ).map((v: Definition) => <SingleDefinition {...v} />)
+        }
+    </Container>;
 }

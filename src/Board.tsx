@@ -1,7 +1,6 @@
 import React from "react";
-import { AspectRatio, Box, Editable, EditableInput, EditablePreview, Flex, SimpleGrid } from "@chakra-ui/react";
+import { AspectRatio, Box, Editable, EditableInput, EditablePreview, SimpleGrid } from "@chakra-ui/react";
 import { BOARD_SIZE, IndexedBoard, IndexedCell, IndexedLegalCell } from "./data";
-import { Stream } from "stream";
 
 type BoardCellProps = IndexedCell & {
     onChange: (_: IndexedLegalCell) => void
@@ -54,7 +53,8 @@ export default function Board({ setCube, currentBoard }: BoardProps): JSX.Elemen
                 dir="rtl"
                 columns={BOARD_SIZE}
                 minW="40vw"
-                maxW="90vw"
+                maxW={["90vw", "45vw"]}
+                maxH={["30vh", "60vh"]}
                 flex="1"
                 mx="auto"
                 style={{aspectRatio: 1}}
