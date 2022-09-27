@@ -1,4 +1,4 @@
-import { Box, ChakraProvider, Flex, Heading, Spacer, Spinner, theme } from "@chakra-ui/react"
+import { Box, ChakraProvider, Flex, Heading, Spinner, extendTheme } from "@chakra-ui/react"
 import reducers, { useAppDispatch, useBoard } from "./reducers"
 import { Provider, useSelector } from "react-redux"
 import { setCube } from "./reducers/board"
@@ -39,7 +39,7 @@ const RootApp = () => {
         id="bigContainer"
         dir="rtl"
         direction="row"
-        justify="space-evenly"
+        justify="start"
         align="top"
         wrap="wrap"
         mt="15"
@@ -55,10 +55,20 @@ const RootApp = () => {
   )
 }
 
+const globalTheme = extendTheme({
+  styles: {
+    global: {
+      body: {
+        bgColor: 'yellow.50'
+      }
+    }
+  }
+})
+
 export const App = () => {
   const { store, persistor } = reducers();
 
-  return <ChakraProvider theme={theme}>
+  return <ChakraProvider theme={globalTheme}>
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={<Spinner size='xl' />}>
         <RootApp />
