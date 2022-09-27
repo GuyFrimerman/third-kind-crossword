@@ -1,3 +1,4 @@
+import React from "react";
 import { Container, FormControl, Flex, FormLabel, RadioGroup, VStack, Radio, StackDivider, SliderMark, SliderTrack, SliderThumb, Slider } from "@chakra-ui/react";
 import { BOARD_SIZE, Plane } from "./data";
 import { useAppDispatch } from "./reducers";
