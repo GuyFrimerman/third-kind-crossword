@@ -38,7 +38,7 @@ export default function Definitions({ header, name, onlyVisible, indices, plane 
     return <Container
         textAlign='right'
         dir="rtl"
-        p="5"
+        m="5"
         style={{columnCount: "2"}}
         >
     

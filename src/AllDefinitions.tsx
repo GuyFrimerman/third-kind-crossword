@@ -19,6 +19,7 @@ export default function AllDefinitions({ indices, plane }: AllDefinitionsProps):
             <FormControl
                 as={Flex}
                 dir="rtl"
+                p="2"
             >
                 <FormLabel
                     as="h2">
@@ -33,9 +34,10 @@ export default function AllDefinitions({ indices, plane }: AllDefinitionsProps):
             textAlign="right"
             columns={1}
             h={(document.getElementById('bigContainer')?.getBoundingClientRect().bottom || 0) - 
-                    (document.getElementById('topMark')?.getBoundingClientRect().bottom || 0)}
+                    (document.getElementById('topMark')?.getBoundingClientRect().bottom || 0) }
             p="3"
             overflowY="auto"
+            overflowX="hidden"
         >
             <Definitions
                 header="אופקי"

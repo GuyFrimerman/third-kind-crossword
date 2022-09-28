@@ -62,7 +62,8 @@ const globalTheme = extendTheme({
         bgColor: 'yellow.50'
       }
     }
-  }
+  },
+  direction: 'rtl'
 })
 
 export const App = () => {
