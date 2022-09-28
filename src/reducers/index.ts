@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch, useSelector } from 'react-redux';
-import { persistCombineReducers, persistStore } from 'redux-persist';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { FLUSH, PAUSE, PERSIST, persistCombineReducers, persistStore, PURGE, REGISTER, REHYDRATE } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { getBoard } from '../data';
 import { boardApi } from './board';
+import { cursor } from './cursor';
 import { definitionsApi } from './definitions';
 import { viewBoard } from './view';
 
@@ -12,13 +13,21 @@ const persistConfig = {
     storage
 };
 
+const rootReducer = persistCombineReducers(persistConfig, {
+    [definitionsApi.reducerPath]: definitionsApi.reducer,
+    [boardApi.name]: boardApi.reducer,
+    [viewBoard.name]: viewBoard.reducer,
+    [cursor.name]: cursor.reducer,
+});
+
 const store = configureStore({
-    reducer: persistCombineReducers(persistConfig, {
-        [definitionsApi.reducerPath]: definitionsApi.reducer,
-        [boardApi.name]: boardApi.reducer,
-        [viewBoard.name]: viewBoard.reducer
-    }),
-    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(definitionsApi.middleware)
+    reducer: rootReducer,
+    middleware: getDefaultMiddleware => getDefaultMiddleware({
+        serializableCheck: {
+            ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        },
+    }).concat(definitionsApi.middleware)
+
 });
 
 export default function reducers() {
@@ -30,9 +39,11 @@ export default function reducers() {
 }
 
 export type RootState = ReturnType<typeof store.getState>;
-export const useAppDispatch: () => RootState = useDispatch;
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch: () => AppDispatch = useDispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-export const useBoard = () => useSelector((state: RootState) => {
+export const useBoard = () => useAppSelector((state: RootState) => {
     const { layer, plane } = state.view;
     return getBoard(state.board, plane, layer)
 });

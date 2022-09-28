@@ -1,14 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
-import { RootState } from ".";
-import { getEmptyBoard } from "../data";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState, useAppSelector } from ".";
+import { getEmptyBoard, IndexedLegalCell } from "../data";
+
 
 export const boardApi = createSlice({
   name: 'board',
   initialState: getEmptyBoard(),
   reducers: {
-    setCube: (state, {payload: {index, value}}) => {
-      state[index] = value;
+    setCube: (state, {payload: {index, value}}: PayloadAction<IndexedLegalCell>) => {
+      state[index - 1] = value;
       return state;
     },
     resetBoard: () => getEmptyBoard()
@@ -20,4 +20,4 @@ export const {
   setCube
 } = boardApi.actions;
 
-export const useRawBoard = () => useSelector((state: RootState) => state.board)
+export const useRawBoard = () => useAppSelector((state: RootState) => state.board)

@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
-import { RootState } from ".";
+import { RootState, useAppSelector } from ".";
 import { Plane } from "../data";
 
 export type PlaneString = 'YZ' | 'XZ' | 'XY';
@@ -23,4 +22,4 @@ export const viewBoard = createSlice({
 });
 
 export const { setLayer, setPlane } = viewBoard.actions;
-export const useView = () => useSelector((state: RootState) => state.view);
+export const useView = () => useAppSelector((state: RootState) => state.view);

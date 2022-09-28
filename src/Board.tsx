@@ -1,12 +1,62 @@
-import React from "react";
-import { AspectRatio, Box, Editable, EditableInput, EditablePreview, SimpleGrid } from "@chakra-ui/react";
+import { useEffect, useRef } from "react";
+import { AspectRatio, Box, Editable, EditableInput, EditablePreview, SimpleGrid, useEditableState } from "@chakra-ui/react";
 import { BOARD_SIZE, IndexedCell, IndexedLegalCell } from "./data";
-import { useBoard } from "./reducers";
+import { AppDispatch, useAppDispatch, useBoard } from "./reducers";
+import { Cursor, setIndex, useCursor } from "./reducers/cursor";
+import { setCube } from "./reducers/board";
 
 type BoardCellProps = IndexedCell & {
     onChange: (_: IndexedLegalCell) => void
+    current: number | undefined
+    dispatch: AppDispatch
 }
-const BoardCell = ({ index, value, onChange }: BoardCellProps): JSX.Element => {
+const LegalCell = ({index, value, current, dispatch, onChange}: BoardCellProps) => {
+    const ref = useRef<HTMLInputElement>(null);
+    const onFocus = () => {
+        if (current !== index) {
+            dispatch(setIndex(index))
+        }
+    }
+    useEffect(() => {
+        if (current === index && document.activeElement !== ref.current) {
+            ref.current?.focus()
+        }
+    }, [current, index]
+    )
+
+    const handleChange = (value: string) => {
+        if (value.length != 0) {
+            onChange({ index, value })
+        }
+    }
+
+    return <Box textAlign="center" >
+        <Box
+            ml={{ sm: "1px", base: "1" }}
+            textAlign="left"
+            fontSize={["8px", "small"]}
+            position='absolute'
+            top="0"
+            left="0">
+            {index}
+        </Box>
+        <Editable
+            placeholder="__"
+            defaultValue={value || ''}
+            onChange={handleChange}
+            flex="1"
+            margin="auto"
+            position="absolute"
+            fontSize={{ sm: "2xl", base: "2xl" }}
+        >
+            <EditablePreview ref={ref} onFocus={onFocus} />
+            <EditableInput maxLength={1} />
+        </Editable>
+    </Box>
+
+}
+
+const BoardCell = ({ index, value, current, dispatch, onChange }: BoardCellProps): JSX.Element => {
     return <AspectRatio
         bg={value === null ? 'black' : 'inherit'}
         ratio={1}
@@ -15,52 +65,40 @@ const BoardCell = ({ index, value, onChange }: BoardCellProps): JSX.Element => {
     >
         {value === null ?
             <Box /> :
-            <Box textAlign="center" >
-                <Box
-                    ml={{ sm: "1px", base: "1" }}
-                    textAlign="left"
-                    fontSize={["8px", "small"]}
-                    position='absolute'
-                    top="0"
-                    left="0">
-                    {index + 1}
-                </Box>
-                <Editable
-                    placeholder="__"
-                    defaultValue={value || ''}
-                    onSubmit={value => onChange({ index, value })}
-                    flex="1"
-                    margin="auto"
-                    position="absolute"
-                    fontSize={{ sm: "2xl", base: "2xl" }}
-                >
-                    <EditablePreview id={`boardCell${index}`} />
-                    <EditableInput maxLength={1} onChange={console.log}/>
-                </Editable>
-            </Box>
+            <LegalCell {...{index, value, current, dispatch, onChange}} />
         }
     </AspectRatio>
 };
 
 
-type BoardProps = {
-    setCube: (_: IndexedLegalCell) => any,
-}
-
-export default function Board({ setCube }: BoardProps): JSX.Element {
+export default function Board(): JSX.Element {
     const board = useBoard();
+    const { index: current, direction }: Cursor = useCursor();
+    const dispatch = useAppDispatch()
+
+    const onChange = (value: IndexedLegalCell) => {
+        dispatch(setIndex(current ? current + direction : current));
+        dispatch(setCube(value));
+    }
+
     return (
-            <SimpleGrid
-                dir="rtl"
-                columns={BOARD_SIZE}
-                minW="40vw"
-                maxW={["90vw", "80vh"]}
-                maxH="60vh"
-                flex="1"
-                mx="auto"
-                style={{aspectRatio: 1}}
-            >
-                {board.map((props) => <BoardCell key={props.index} {...props} onChange={setCube} />)}
-            </SimpleGrid>
+        <SimpleGrid
+            dir="rtl"
+            columns={BOARD_SIZE}
+            minW="40vw"
+            maxW={["90vw", "80vh"]}
+            maxH="60vh"
+            flex="1"
+            mx="auto"
+            style={{ aspectRatio: 1 }}
+        >
+            {board.map((props) => <BoardCell
+                key={props.index}
+                current={current}
+                onChange={onChange}
+                dispatch={dispatch}
+                {...props}
+            />)}
+        </SimpleGrid>
     );
 }

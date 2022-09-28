@@ -12,7 +12,7 @@ export default function Display({children, layer, plane}: DisplayProps) {
     const isRelevant = (index: number) => Math.floor(index / plane) % 7 === (layer - 1);
 
     return (
-            <Canvas camera={{ position: [17,15,18], fov: 30}}>
+            <Canvas camera={{ position: [17,15,18], fov: 40}}>
                 {children}
                 <ambientLight/>
                 <pointLight position={[10, 10, 10]} />

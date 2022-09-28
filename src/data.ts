@@ -5,6 +5,8 @@ export enum Axis {
     Z = BOARD_SIZE ** 2,
 };
 
+export const AXES = [ Axis.X, Axis.Y, Axis.Z ];
+
 export enum Plane {
     YZ = Axis.X as number,
     XZ = Axis.Y as number,
@@ -30,5 +32,6 @@ export function getBoard(allData: RawBoard, plane: Plane, layer: number) : Index
 
   return allData
     .map((value, index) => ({index, value}))
-    .filter(({index}) => Math.floor(index / plane) % BOARD_SIZE === (layer - 1));
+    .filter(({index}) => Math.floor(index / plane) % BOARD_SIZE === (layer - 1))
+    .map(({value, index}) =>({value, index: index + 1}));
 }

@@ -1,12 +1,23 @@
 import { Flex, FormLabel, Select, Spacer, Box } from "@chakra-ui/react";
-import { BOARD_SIZE, Plane } from "./data";
+import { AXES, Axis, BOARD_SIZE, Plane } from "./data";
 import Display from "./Display";
 import { useAppDispatch } from "./reducers";
+import { setDirection, useCursor } from "./reducers/cursor";
 import { setLayer, setPlane, useView } from "./reducers/view";
 
 export default function ChooseBoard(): JSX.Element {
     const { layer, plane } = useView();
     const dispatch = useAppDispatch();
+    const {direction} = useCursor();
+
+    const changePlane = (newPlane: string) => {
+        dispatch(setPlane(newPlane));
+        if (newPlane === Plane[direction]){
+            const newDirection = AXES.find(x => x !== Number(newPlane)) as Axis;
+            dispatch(setDirection(newDirection))
+        }
+    }
+
     return (
         <Flex direction="row" dir="rtl" mx="7%" mt="5'">
             <Box flexShrink="1" w="25%" style={{ aspectRatio: 1 }}>
@@ -30,7 +41,7 @@ export default function ChooseBoard(): JSX.Element {
                         dir="rtl"
                         size="sm"
                         textAlign="left"
-                        onChange={(v => dispatch(setPlane(v.target.value)))}
+                        onChange={e => changePlane(e.target.value)}
                     >
                         <option value={Plane.YZ}>אופקי</option>
                         <option value={Plane.XZ}>אנכי</option>

@@ -20,11 +20,11 @@ const axes = [
     }
 ]
 
-export default function AllDefinitions(): JSX.Element {
+export default function AllDefinitions() {
     const [onlyVisible, setVisible] = useState(false);
     const { layer, plane } = useView();
 
-    const isRelevant = (index: number) => Math.floor(index / plane) % BOARD_SIZE === layer;
+    const isRelevant = (index: number) => Math.floor((index - 1) / plane) % BOARD_SIZE === layer - 1;
 
     return <VStack
         bottom="inherit"
@@ -60,7 +60,8 @@ export default function AllDefinitions(): JSX.Element {
                     .filter(({ axis }) => onlyVisible || axis !== plane as number)
                     .map(({ axis, header }) => (
                         <Definitions
-                            name={Axis[axis]}
+                            key={axis}
+                            axis={axis}
                             header={header}
                             plane={plane}
                             isRelevant={(x => onlyVisible || isRelevant(x))}
