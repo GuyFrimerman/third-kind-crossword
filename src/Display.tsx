@@ -1,25 +1,20 @@
-import { Box } from "@chakra-ui/react";
-import { Camera, Canvas, useThree } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { Canvas } from "@react-three/fiber";
 import Cube from "./Cube";
 import { Cell } from "./data";
 import { useRawBoard } from "./reducers/board";
-import { useView } from "./reducers/view";
 
-
-export default function Display() {
+export default function Display({children, layer, plane}: any) {
     const rawBoard = useRawBoard();
-    const { layer, plane } = useView();
-    const ref = useRef<Camera>();
+
+    const isRelevant = (index: number) => Math.floor(index / plane) % 7 === (layer - 1);
 
     return (
-        <Box flexShrink="1" w="30%" style={{aspectRatio: 1}}>
             <Canvas camera={{ position: [17,15,18], fov: 30}}>
+                {children}
                 <ambientLight/>
                 <pointLight position={[10, 10, 10]} />
-                {rawBoard.map((value: Cell, index: number) => <Cube key={index} value={value} index={index} layer={layer} plane={plane} />)}
+                {rawBoard.map((value: Cell, index: number) => <Cube key={index} value={value} index={index} isRelevant={isRelevant(index)}/>)}
             </Canvas>
-        </Box>
     )
 
 }

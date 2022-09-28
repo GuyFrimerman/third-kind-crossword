@@ -1,7 +1,5 @@
 import { Edges } from '@react-three/drei';
-import {ThreeElements} from '@react-three/fiber'
 import { Axis, IndexedCell } from './data';
-import { View } from './reducers/view';
 
 const getPositionFromIndex = (index: number) => {
     const x = Math.floor(index / Axis.X) % 7
@@ -10,10 +8,9 @@ const getPositionFromIndex = (index: number) => {
     return [7 - x, 7 - z, y]
 }
 
-type CubeProps = IndexedCell & View;
+type CubeProps = IndexedCell & { isRelevant: boolean }
 
-export default function Cube({index, value, plane, layer} : CubeProps) {
-    const isRelevant = Math.floor(index / plane) % 7 === (layer - 1);
+export default function Cube({index, value, isRelevant} : CubeProps) {
     return (
         <mesh
             position={getPositionFromIndex(index)}
