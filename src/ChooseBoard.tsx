@@ -1,4 +1,4 @@
-import { Flex, FormLabel, Select, Spacer, Divider, Box } from "@chakra-ui/react";
+import { Flex, FormLabel, Select, Spacer, Box } from "@chakra-ui/react";
 import { BOARD_SIZE, Plane } from "./data";
 import Display from "./Display";
 import { useAppDispatch } from "./reducers";
@@ -7,15 +7,13 @@ import { setLayer, setPlane, useView } from "./reducers/view";
 export default function ChooseBoard(): JSX.Element {
     const { layer, plane } = useView();
     const dispatch = useAppDispatch();
-    return <>
-        <Divider />
-        <Flex direction="row" dir="rtl">
+    return (
+        <Flex direction="row" dir="rtl" mx="7%" mt="5'">
             <Box flexShrink="1" w="25%" style={{ aspectRatio: 1 }}>
                 <Display {...{layer, plane}}/>
             </Box>
             <Flex
                 direction="column"
-                mx="4"
                 my="2"
                 dir="rtl"
                 textAlign="left"
@@ -55,6 +53,5 @@ export default function ChooseBoard(): JSX.Element {
                 </Flex>
             </Flex>
         </Flex>
-        <Divider />
-    </>;
+    );
 }

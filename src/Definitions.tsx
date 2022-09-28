@@ -20,7 +20,7 @@ const SingleDefinition = ({ definition, start }: Definition) => (
         {definition}
     </Text>)
 
-export default function Definitions({ header, name, onlyVisible, indices, plane }: DefinitionsProps) : JSX.Element {
+export default function Definitions({ header, name, onlyVisible, indices, plane }: DefinitionsProps): JSX.Element {
     const { data, isLoading } = useGetDefinitionsQuery(name);
     const [horizontal, vertical] = Plane[plane];
     let icon: JSX.Element | undefined = undefined;
@@ -38,18 +38,20 @@ export default function Definitions({ header, name, onlyVisible, indices, plane 
     return <Container
         textAlign='right'
         dir="rtl"
-        m="5"
-        style={{columnCount: "2"}}
-        >
-    
+    >
+
         <Heading fontSize="2xl">
             {header} {icon}
         </Heading>
-        {isLoading ?
-            <Spinner /> :
-            data?.filter(
-                ({ start }) => onlyVisible || (indices.includes(start - 1) && plane !== Axis[name] as number)
-            ).map((v: Definition) => <SingleDefinition {...v} />)
-        }
+        <Container
+            style={{ columnCount: "2" }}
+        >
+            {isLoading ?
+                <Spinner /> :
+                data?.filter(
+                    ({ start }) => onlyVisible || (indices.includes(start - 1) && plane !== Axis[name] as number)
+                ).map((v: Definition) => <SingleDefinition {...v} />)
+            }
+        </Container>
     </Container>;
 }

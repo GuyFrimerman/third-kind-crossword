@@ -1,15 +1,19 @@
 import { Canvas } from "@react-three/fiber";
+import { Key } from "react";
 import Cube from "./Cube";
-import { Cell } from "./data";
-import { useRawBoard } from "./reducers/board";
+import { Cell, getEmptyBoard } from "./data";
+import { View } from "./reducers/view";
 
-export default function Display({children, layer, plane}: any) {
-    const rawBoard = useRawBoard();
+type DisplayProps = {
+    children?: any,
+} & View
 
+export default function Display({children, layer, plane}: DisplayProps) {
+    const rawBoard = getEmptyBoard();
     const isRelevant = (index: number) => Math.floor(index / plane) % 7 === (layer - 1);
 
     return (
-            <Canvas camera={{ position: [17,15,18], fov: 30}}>
+            <Canvas camera={{ position: [14,15,25], fov: 30}}>
                 {children}
                 <ambientLight/>
                 <pointLight position={[10, 10, 10]} />

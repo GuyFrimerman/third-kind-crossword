@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { RootState } from ".";
-import { get_empty_board } from "../data";
+import { getEmptyBoard } from "../data";
 
 export const boardApi = createSlice({
   name: 'board',
-  initialState: get_empty_board(),
+  initialState: getEmptyBoard(),
   reducers: {
     setCube: (state, _ref) => {
       let {
@@ -17,7 +17,7 @@ export const boardApi = createSlice({
       state[index] = value;
       return state;
     },
-    resetBoard: () => get_empty_board()
+    resetBoard: () => getEmptyBoard()
   }
 });
 

@@ -1,4 +1,4 @@
-import { Box, ChakraProvider, Flex, Heading, Spinner, extendTheme } from "@chakra-ui/react"
+import { Box, ChakraProvider, Flex, Heading, extendTheme } from "@chakra-ui/react"
 import reducers, { useAppDispatch, useBoard } from "./reducers"
 import { Provider, useSelector } from "react-redux"
 import { setCube } from "./reducers/board"
@@ -8,6 +8,7 @@ import Board from "./Board"
 import ChooseBoard from "./ChooseBoard"
 import AllDefinitions from "./AllDefinitions"
 import { PersistGate } from "redux-persist/integration/react"
+import RandomDisplay from "./RandomDisplay"
 
 const RootApp = () => {
   const {
@@ -66,12 +67,24 @@ const globalTheme = extendTheme({
   direction: 'rtl'
 })
 
+const Loading = () => (
+  <Flex
+    m="auto"
+    h="90vh"
+    w="90vw"
+    justify="center"
+    align="center"
+  >
+    <RandomDisplay />
+  </Flex>
+)
+
 export const App = () => {
   const { store, persistor } = reducers();
 
   return <ChakraProvider theme={globalTheme}>
     <Provider store={store}>
-      <PersistGate persistor={persistor} loading={<Spinner size='xl' />}>
+      <PersistGate persistor={persistor} loading={<Loading />}>
         <RootApp />
       </PersistGate>
     </Provider>

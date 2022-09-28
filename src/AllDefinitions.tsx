@@ -34,6 +34,7 @@ export default function AllDefinitions({ indices, plane }: AllDefinitionsProps):
             p="3"
             overflowY="auto"
             overflowX="hidden"
+            justifyContent="start"
         >
             <Definitions
                 header="אופקי"
