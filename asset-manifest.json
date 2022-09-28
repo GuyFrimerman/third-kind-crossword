@@ -1,12 +1,12 @@
 {
   "files": {
-    "main.js": "/third-kind-crossword/static/js/main.694d6585.js",
+    "main.js": "/third-kind-crossword/static/js/main.e4c9c2b7.js",
     "static/js/787.4deb734b.chunk.js": "/third-kind-crossword/static/js/787.4deb734b.chunk.js",
     "index.html": "/third-kind-crossword/index.html",
-    "main.694d6585.js.map": "/third-kind-crossword/static/js/main.694d6585.js.map",
+    "main.e4c9c2b7.js.map": "/third-kind-crossword/static/js/main.e4c9c2b7.js.map",
     "787.4deb734b.chunk.js.map": "/third-kind-crossword/static/js/787.4deb734b.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.694d6585.js"
+    "static/js/main.e4c9c2b7.js"
   ]
 }
