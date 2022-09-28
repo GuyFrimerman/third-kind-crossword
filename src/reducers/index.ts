@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { persistCombineReducers, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { getBoard } from '../data';
@@ -32,7 +32,7 @@ export default function reducers() {
 export type RootState = ReturnType<typeof store.getState>;
 export const useAppDispatch: () => RootState = useDispatch;
 
-export const useBoard = (state: RootState) => {
+export const useBoard = () => useSelector((state: RootState) => {
     const { layer, plane } = state.view;
-    return { board: getBoard(state.board, plane, layer), plane, layer };
-};
+    return getBoard(state.board, plane, layer)
+});

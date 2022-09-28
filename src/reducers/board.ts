@@ -7,13 +7,7 @@ export const boardApi = createSlice({
   name: 'board',
   initialState: getEmptyBoard(),
   reducers: {
-    setCube: (state, _ref) => {
-      let {
-        payload: {
-          index,
-          value
-        }
-      } = _ref;
+    setCube: (state, {payload: {index, value}}) => {
       state[index] = value;
       return state;
     },

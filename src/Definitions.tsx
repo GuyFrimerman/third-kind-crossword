@@ -1,15 +1,14 @@
 import React from "react";
 import { ChevronLeftIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Container, Heading, Spinner, Text } from "@chakra-ui/react";
-import { Axis, Plane } from "./data"
+import { Plane } from "./data"
 import { Definition, useGetDefinitionsQuery } from "./reducers/definitions";
 
 type DefinitionsProps = {
     header: string,
-    name: 'X' | 'Y' | 'Z',
-    onlyVisible: boolean
-    indices: number[]
-    plane: Plane
+    name: string
+    plane: Plane,
+    isRelevant: (_: number) => boolean
 };
 
 const SingleDefinition = ({ definition, start }: Definition) => (
@@ -20,7 +19,7 @@ const SingleDefinition = ({ definition, start }: Definition) => (
         {definition}
     </Text>)
 
-export default function Definitions({ header, name, onlyVisible, indices, plane }: DefinitionsProps): JSX.Element {
+export default function Definitions({ header, name, plane, isRelevant }: DefinitionsProps): JSX.Element {
     const { data, isLoading } = useGetDefinitionsQuery(name);
     const [horizontal, vertical] = Plane[plane];
     let icon: JSX.Element | undefined = undefined;
@@ -49,7 +48,7 @@ export default function Definitions({ header, name, onlyVisible, indices, plane 
             {isLoading ?
                 <Spinner /> :
                 data?.filter(
-                    ({ start }) => onlyVisible || (indices.includes(start - 1) && plane !== Axis[name] as number)
+                    ({ start }) => (isRelevant(start - 1))
                 ).map((v: Definition) => <SingleDefinition {...v} />)
             }
         </Container>

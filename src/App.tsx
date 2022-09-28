@@ -1,6 +1,6 @@
 import { Box, ChakraProvider, Flex, Heading, extendTheme } from "@chakra-ui/react"
-import reducers, { useAppDispatch, useBoard } from "./reducers"
-import { Provider, useSelector } from "react-redux"
+import reducers, { useAppDispatch } from "./reducers"
+import { Provider } from "react-redux"
 import { setCube } from "./reducers/board"
 import Info from "./Info"
 import { IndexedLegalCell } from "./data"
@@ -11,11 +11,6 @@ import { PersistGate } from "redux-persist/integration/react"
 import RandomDisplay from "./RandomDisplay"
 
 const RootApp = () => {
-  const {
-    plane,
-    board: currentBoard
-  } = useSelector(useBoard);
-  const indices = currentBoard.map(({ index }) => index);
   const dispatch = useAppDispatch();
 
   return (
@@ -47,10 +42,10 @@ const RootApp = () => {
         h="90vh"
       >
         <Box minW={["80vw", "45vw"]} mx="10">
-          <Board currentBoard={currentBoard} setCube={(v: IndexedLegalCell) => dispatch(setCube(v))} />
+          <Board setCube={(v: IndexedLegalCell) => dispatch(setCube(v))} />
           <ChooseBoard />
         </Box>
-        <AllDefinitions indices={indices} plane={plane} />
+        <AllDefinitions />
       </Flex>
     </Flex>
   )

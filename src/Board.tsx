@@ -1,6 +1,7 @@
 import React from "react";
 import { AspectRatio, Box, Editable, EditableInput, EditablePreview, SimpleGrid } from "@chakra-ui/react";
-import { BOARD_SIZE, IndexedBoard, IndexedCell, IndexedLegalCell } from "./data";
+import { BOARD_SIZE, IndexedCell, IndexedLegalCell } from "./data";
+import { useBoard } from "./reducers";
 
 type BoardCellProps = IndexedCell & {
     onChange: (_: IndexedLegalCell) => void
@@ -25,8 +26,8 @@ const BoardCell = ({ index, value, onChange }: BoardCellProps): JSX.Element => {
                     {index + 1}
                 </Box>
                 <Editable
-                    defaultValue={value || ''}
                     placeholder="__"
+                    defaultValue={value || ''}
                     onSubmit={value => onChange({ index, value })}
                     flex="1"
                     margin="auto"
@@ -34,7 +35,7 @@ const BoardCell = ({ index, value, onChange }: BoardCellProps): JSX.Element => {
                     fontSize={{ sm: "2xl", base: "2xl" }}
                 >
                     <EditablePreview id={`boardCell${index}`} />
-                    <EditableInput maxLength={1} />
+                    <EditableInput maxLength={1} onChange={console.log}/>
                 </Editable>
             </Box>
         }
@@ -44,10 +45,10 @@ const BoardCell = ({ index, value, onChange }: BoardCellProps): JSX.Element => {
 
 type BoardProps = {
     setCube: (_: IndexedLegalCell) => any,
-    currentBoard: IndexedBoard,
 }
 
-export default function Board({ setCube, currentBoard }: BoardProps): JSX.Element {
+export default function Board({ setCube }: BoardProps): JSX.Element {
+    const board = useBoard();
     return (
             <SimpleGrid
                 dir="rtl"
@@ -59,7 +60,7 @@ export default function Board({ setCube, currentBoard }: BoardProps): JSX.Elemen
                 mx="auto"
                 style={{aspectRatio: 1}}
             >
-                {currentBoard.map((props) => <BoardCell {...props} key={props.index} onChange={setCube} />)}
+                {board.map((props) => <BoardCell key={props.index} {...props} onChange={setCube} />)}
             </SimpleGrid>
     );
 }
