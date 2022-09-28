@@ -1,5 +1,6 @@
-import { Flex, FormLabel, VStack, Select, Spacer, Divider, Box } from "@chakra-ui/react";
+import { Flex, FormLabel, Select, Spacer, Divider } from "@chakra-ui/react";
 import { BOARD_SIZE, Plane } from "./data";
+import Display from "./Display";
 import { useAppDispatch } from "./reducers";
 import { setLayer, setPlane, useView } from "./reducers/view";
 
@@ -8,16 +9,19 @@ export default function ChooseBoard(): JSX.Element {
     const dispatch = useAppDispatch();
     return <>
         <Divider />
-        <Flex direction="row" dir="rtl" justify="start">
+        <Flex direction="row" dir="rtl">
+            <Display />
             <Flex
                 direction="column"
                 mx="4"
                 my="2"
                 dir="rtl"
                 textAlign="left"
-                flex="0.6"
+                justify="start"
+                flex="1"
+                h="min-content"
             >
-                <Flex direction="row">
+                <Flex direction="row" flex="1">
                     <FormLabel fontSize="sm">מישור</FormLabel>
                     <Spacer />
                     <Select
@@ -42,13 +46,12 @@ export default function ChooseBoard(): JSX.Element {
                         dir="rtl"
                         size="sm"
                         textAlign="left"
-                        onChange={(v => dispatch(setLayer(v.target.value)))}
+                        onChange={(v => dispatch(setLayer(Number(v.target.value))))}
                     >
                         {Array.from(Array(BOARD_SIZE)).map((_, i) => <option key={i} value={i + 1}>{i + 1}</option>)}
                     </Select>
                 </Flex>
             </Flex>
-            <Box bgColor="blue" flex="0.4"/>
         </Flex>
         <Divider />
     </>;

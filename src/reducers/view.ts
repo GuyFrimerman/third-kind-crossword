@@ -5,6 +5,11 @@ import { Plane } from "../data";
 
 export type PlaneString = 'YZ' | 'XZ' | 'XY';
 
+export type View  = {
+  layer: number,
+  plane: Plane
+};
+
 export const viewBoard = createSlice({
   name: 'view',
   initialState: {

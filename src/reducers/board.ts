@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
+import { RootState } from ".";
 import { get_empty_board } from "../data";
 
 export const boardApi = createSlice({
@@ -23,3 +25,5 @@ export const {
   resetBoard,
   setCube
 } = boardApi.actions;
+
+export const useRawBoard = () => useSelector((state: RootState) => state.board)
