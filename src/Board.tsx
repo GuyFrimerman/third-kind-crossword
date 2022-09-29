@@ -43,7 +43,8 @@ const LegalCell = ({ index, value, current, dispatch, onChange }: BoardCellProps
         <Editable
             placeholder="__"
             defaultValue={value || ''}
-            onInput={(e: any) => handleChange(e.target.value)}
+            onInput={(e: any) => {if (e.target.value === value) handleChange(e.target.value)}}
+            onChange={handleChange}
             flex="1"
             margin="auto"
             position="absolute"

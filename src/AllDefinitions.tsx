@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Axis, BOARD_SIZE } from "./data"
 import Definitions from "./Definitions";
 import { useView } from "./reducers/view";
-import ResetBoard from "./ResetBoard";
 
 const axes = [
     {
@@ -27,7 +26,6 @@ export default function AllDefinitions() {
     const isRelevant = (index: number) => Math.floor((index - 1) / plane) % BOARD_SIZE === layer - 1;
 
     return <Flex
-        // bgColor="red"
         flex="1 0"
         minH="5em"
         direction="column"
@@ -41,7 +39,6 @@ export default function AllDefinitions() {
         wrap="wrap"
         justify="space-between"
         >
-            <ResetBoard />
             <HStack mx="3">
                 <FormLabel
                     as="h2">

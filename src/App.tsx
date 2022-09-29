@@ -12,10 +12,10 @@ import RandomDisplay from "./RandomDisplay"
 const RootApp = () => (
   <Flex
     className="app"
-    id="root"
     direction="column"
     alignItems="center"
     justify="start"
+    m="auto"
   >
     <Heading
       fontSize={["2xl", "4xl"]}
@@ -31,9 +31,9 @@ const RootApp = () => (
       dir="rtl"
       direction="column"
       justify="space-between"
-      alignContent="center"
+      alignContent="space-around"
       wrap="wrap"
-      h="90vh"
+      h={["85vh", "90vh"]}
       w="90vw"
       m="auto"
       mt="15"
@@ -49,7 +49,8 @@ const globalTheme = extendTheme({
   styles: {
     global: {
       body: {
-        bgColor: 'yellow.50'
+        bgColor: 'yellow.50',
+        overscrollBehaviorY: 'contain'
       }
     }
   },
