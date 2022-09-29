@@ -10,7 +10,7 @@ type BoardCellProps = IndexedCell & {
     current: number | undefined
     dispatch: AppDispatch
 }
-const LegalCell = ({index, value, current, dispatch, onChange}: BoardCellProps) => {
+const LegalCell = ({ index, value, current, dispatch, onChange }: BoardCellProps) => {
     const ref = useRef<HTMLInputElement>(null);
     const onFocus = () => {
         if (current !== index) {
@@ -65,7 +65,7 @@ const BoardCell = ({ index, value, current, dispatch, onChange }: BoardCellProps
     >
         {value === null ?
             <Box /> :
-            <LegalCell {...{index, value, current, dispatch, onChange}} />
+            <LegalCell {...{ index, value, current, dispatch, onChange }} />
         }
     </AspectRatio>
 };
@@ -82,23 +82,24 @@ export default function Board(): JSX.Element {
     }
 
     return (
-        <SimpleGrid
-            dir="rtl"
-            columns={BOARD_SIZE}
-            minW="40vw"
-            maxW={["90vw", "80vh"]}
-            maxH="60vh"
-            flex="1"
-            mx="auto"
-            style={{ aspectRatio: 1 }}
+        <Box
+                    w={["80vmin", "65vmin"]}
+                    style={{aspectRatio: 1}}
+                    flex="0 0 "
         >
-            {board.map((props) => <BoardCell
-                key={props.index}
-                current={current}
-                onChange={onChange}
-                dispatch={dispatch}
-                {...props}
-            />)}
-        </SimpleGrid>
-    );
+                <SimpleGrid
+                    style={{aspectRatio: 1}}
+                    dir="rtl"
+                    mx="auto"
+                    columns={BOARD_SIZE}
+                >
+                    {board.map((props) => <BoardCell
+                        key={props.index}
+                        current={current}
+                        onChange={onChange}
+                        dispatch={dispatch}
+                        {...props}
+                    />)}
+                </SimpleGrid>
+        </Box>);
 }

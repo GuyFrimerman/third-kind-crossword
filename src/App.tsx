@@ -1,4 +1,4 @@
-import { Box, ChakraProvider, Flex, Heading, extendTheme } from "@chakra-ui/react"
+import { Box, ChakraProvider, Flex, Heading, extendTheme, Spacer } from "@chakra-ui/react"
 import reducers from "./reducers"
 import { Provider } from "react-redux"
 import Info from "./Info"
@@ -7,17 +7,19 @@ import ChooseBoard from "./ChooseBoard"
 import AllDefinitions from "./AllDefinitions"
 import { PersistGate } from "redux-persist/integration/react"
 import RandomDisplay from "./RandomDisplay"
+import { useRef } from "react"
 
 
 const RootApp = () => {
+  const wrappingRef = useRef<HTMLDivElement>(null);
 
   return (
     <Flex
       className="app"
       id="root"
       direction="column"
-      maxW="100vw"
-      justify="stretch"
+      alignItems="center"
+      justify="start"
     >
       <Heading
         fontSize={["2xl", "4xl"]}
@@ -30,20 +32,19 @@ const RootApp = () => {
         <Info />
       </Heading>
       <Flex
-        id="bigContainer"
         dir="rtl"
-        direction="row"
-        justify="start"
-        align="top"
+        direction="column"
+        justify="space-between"
+        alignContent="center"
         wrap="wrap"
-        mt="15"
         h="90vh"
+        w="90vw"
+        m="auto"
+        mt="15"
       >
-        <Box minW={["80vw", "45vw"]} mx="10">
-          <Board/>
-          <ChooseBoard />
-        </Box>
-        <AllDefinitions/>
+        <Board />
+        <ChooseBoard />
+        <AllDefinitions />
       </Flex>
     </Flex>
   )
@@ -77,9 +78,9 @@ export const App = () => {
 
   return <ChakraProvider theme={globalTheme}>
     <Provider store={store}>
-      <PersistGate persistor={persistor} loading={<Loading />}>
-        <RootApp />
-      </PersistGate>
+      {/* <PersistGate persistor={persistor} loading={<Loading />}> */}
+      <RootApp />
+      {/* </PersistGate> */}
     </Provider>
   </ChakraProvider>
 }

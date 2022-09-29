@@ -8,28 +8,37 @@ import { setLayer, setPlane, useView } from "./reducers/view";
 export default function ChooseBoard(): JSX.Element {
     const { layer, plane } = useView();
     const dispatch = useAppDispatch();
-    const {direction} = useCursor();
+    const { direction } = useCursor();
 
     const changePlane = (newPlane: string) => {
         dispatch(setPlane(newPlane));
-        if (newPlane === Plane[direction]){
+        if (newPlane === Plane[direction]) {
             const newDirection = AXES.find(x => x !== Number(newPlane)) as Axis;
             dispatch(setDirection(newDirection))
         }
     }
 
     return (
-        <Flex direction="row" dir="rtl" mx="7%" mt="5'">
-            <Box flexShrink="1" w="25%" style={{ aspectRatio: 1 }}>
-                <Display {...{layer, plane}}/>
+        <Flex
+            direction="row"
+            dir="rtl"
+            justify="stretch"
+            flex="0 0"
+            w={["80vmin", "65vmin"]}
+        >
+            <Box
+            w={["20vmin", "10em"]}
+            h={["20vmin", "10em"]}
+            >
+                <Display {...{ layer, plane }} />
             </Box>
             <Flex
                 direction="column"
                 my="2"
                 dir="rtl"
                 textAlign="left"
-                justify="start"
                 flex="1"
+                justify="stretch"
                 h="min-content"
             >
                 <Flex direction="row" flex="1">

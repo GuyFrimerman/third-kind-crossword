@@ -1,5 +1,5 @@
-import { Flex, FormLabel, HStack, SimpleGrid, StackDivider, Switch, VStack } from "@chakra-ui/react"
-import { useState } from "react";
+import { Box, Flex, FormLabel, HStack, SimpleGrid, StackDivider, Switch, VStack } from "@chakra-ui/react"
+import { useRef, useState, RefObject } from "react";
 import { Axis, BOARD_SIZE } from "./data"
 import Definitions from "./Definitions";
 import { useView } from "./reducers/view";
@@ -21,19 +21,28 @@ const axes = [
 ]
 
 export default function AllDefinitions() {
-    const [onlyVisible, setVisible] = useState(false);
+    const [onlyVisible, setVisible] = useState(true);
     const { layer, plane } = useView();
 
     const isRelevant = (index: number) => Math.floor((index - 1) / plane) % BOARD_SIZE === layer - 1;
 
-    return <VStack
-        bottom="inherit"
-        align="center"
-        maxH={["50vh", "90vh"]}
-        divider={<StackDivider />}
+    return <Flex
+        // bgColor="red"
+        flex="1 0"
+        minH="5em"
+        direction="column"
+        align="stretch"
+        minW={["initial", "60ch"]}
+        ms={["initial", "10"]}
     >
-        <Flex w="100%" dir="rtl" justify="space-between">
-            <HStack ml="auto" mr="10">
+        <Flex
+        dir="rtl"
+        direction="row-reverse"
+        wrap="wrap"
+        justify="space-between"
+        >
+            <ResetBoard />
+            <HStack mx="3">
                 <FormLabel
                     as="h2">
                     כל ההגדרות
@@ -41,19 +50,15 @@ export default function AllDefinitions() {
                 <Switch
                     onChange={() => setVisible(!onlyVisible)}
                     isChecked={onlyVisible} />
-                <span id="topMark" />
             </HStack>
-            <ResetBoard />
         </Flex>
-        <SimpleGrid
+        <Flex
             textAlign="right"
-            columns={1}
-            h={(document.getElementById('bigContainer')?.getBoundingClientRect().bottom || 0) -
-                (document.getElementById('topMark')?.getBoundingClientRect().bottom || 0)}
-            p="3"
             overflowY="auto"
-            overflowX="hidden"
-            justifyContent="start"
+            direction="column"
+            align="start"
+            justify="start"
+            w="100%"
         >
             {
                 axes
@@ -69,6 +74,6 @@ export default function AllDefinitions() {
                     )
                     )
             }
-        </SimpleGrid>
-    </VStack>;
+        </Flex>
+    </Flex>;
 }
