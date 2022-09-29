@@ -18,6 +18,7 @@ type SingleDefinitionProps = Definition & {
 
 const SingleDefinition = ({ definition, start, onClick }: SingleDefinitionProps) => (
     <Text
+        w="100%"
         fontSize="sm"
         onClick={() => onClick(start)}
     >
