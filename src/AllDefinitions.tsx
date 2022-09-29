@@ -1,5 +1,5 @@
-import { Box, Flex, FormLabel, HStack, SimpleGrid, StackDivider, Switch, VStack } from "@chakra-ui/react"
-import { useRef, useState, RefObject } from "react";
+import { Flex, FormLabel, HStack, Switch } from "@chakra-ui/react"
+import { useState } from "react";
 import { Axis, BOARD_SIZE } from "./data"
 import Definitions from "./Definitions";
 import { useView } from "./reducers/view";
@@ -32,7 +32,7 @@ export default function AllDefinitions() {
         minH="5em"
         direction="column"
         align="stretch"
-        minW={["initial", "60ch"]}
+        minW={["initial", "30ch"]}
         ms={["initial", "10"]}
     >
         <Flex

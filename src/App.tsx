@@ -1,4 +1,4 @@
-import { Box, ChakraProvider, Flex, Heading, extendTheme, Spacer } from "@chakra-ui/react"
+import { ChakraProvider, Flex, Heading, extendTheme } from "@chakra-ui/react"
 import reducers from "./reducers"
 import { Provider } from "react-redux"
 import Info from "./Info"
@@ -7,48 +7,43 @@ import ChooseBoard from "./ChooseBoard"
 import AllDefinitions from "./AllDefinitions"
 import { PersistGate } from "redux-persist/integration/react"
 import RandomDisplay from "./RandomDisplay"
-import { useRef } from "react"
 
 
-const RootApp = () => {
-  const wrappingRef = useRef<HTMLDivElement>(null);
-
-  return (
-    <Flex
-      className="app"
-      id="root"
-      direction="column"
-      alignItems="center"
-      justify="start"
+const RootApp = () => (
+  <Flex
+    className="app"
+    id="root"
+    direction="column"
+    alignItems="center"
+    justify="start"
+  >
+    <Heading
+      fontSize={["2xl", "4xl"]}
+      as="h1"
+      textAlign="center"
+      maxW="100%"
+      dir="rtl"
     >
-      <Heading
-        fontSize={["2xl", "4xl"]}
-        as="h1"
-        textAlign="center"
-        maxW="100%"
-        dir="rtl"
-      >
-        תשבץ מהסוג השלישי
-        <Info />
-      </Heading>
-      <Flex
-        dir="rtl"
-        direction="column"
-        justify="space-between"
-        alignContent="center"
-        wrap="wrap"
-        h="90vh"
-        w="90vw"
-        m="auto"
-        mt="15"
-      >
-        <Board />
-        <ChooseBoard />
-        <AllDefinitions />
-      </Flex>
+      תשבץ מהסוג השלישי
+      <Info />
+    </Heading>
+    <Flex
+      dir="rtl"
+      direction="column"
+      justify="space-between"
+      alignContent="center"
+      wrap="wrap"
+      h="90vh"
+      w="90vw"
+      m="auto"
+      mt="15"
+    >
+      <Board />
+      <ChooseBoard />
+      <AllDefinitions />
     </Flex>
-  )
-}
+  </Flex>
+)
 
 const globalTheme = extendTheme({
   styles: {
@@ -78,9 +73,9 @@ export const App = () => {
 
   return <ChakraProvider theme={globalTheme}>
     <Provider store={store}>
-      {/* <PersistGate persistor={persistor} loading={<Loading />}> */}
+      <PersistGate persistor={persistor} loading={<Loading />}>
       <RootApp />
-      {/* </PersistGate> */}
+      </PersistGate>
     </Provider>
   </ChakraProvider>
 }

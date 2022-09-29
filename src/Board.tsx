@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { AspectRatio, Box, Editable, EditableInput, EditablePreview, SimpleGrid, useEditableState } from "@chakra-ui/react";
+import { AspectRatio, Box, Editable, EditableInput, EditablePreview, SimpleGrid } from "@chakra-ui/react";
 import { BOARD_SIZE, IndexedCell, IndexedLegalCell } from "./data";
 import { AppDispatch, useAppDispatch, useBoard } from "./reducers";
 import { Cursor, setIndex, useCursor } from "./reducers/cursor";
@@ -25,7 +25,7 @@ const LegalCell = ({ index, value, current, dispatch, onChange }: BoardCellProps
     )
 
     const handleChange = (value: string) => {
-        if (value.length != 0) {
+        if (value.length !== 0) {
             onChange({ index, value })
         }
     }
@@ -43,7 +43,7 @@ const LegalCell = ({ index, value, current, dispatch, onChange }: BoardCellProps
         <Editable
             placeholder="__"
             defaultValue={value || ''}
-            onChange={handleChange}
+            onInput={(e: any) => handleChange(e.target.value)}
             flex="1"
             margin="auto"
             position="absolute"

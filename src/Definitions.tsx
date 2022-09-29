@@ -1,6 +1,5 @@
-import React from "react";
 import { ChevronLeftIcon, ChevronDownIcon } from "@chakra-ui/icons";
-import { Box, Container, Flex, Heading, Spinner, Text } from "@chakra-ui/react";
+import { Box, Heading, Spinner, Text } from "@chakra-ui/react";
 import { Axis, Plane } from "./data"
 import { Definition, useGetDefinitionsQuery } from "./reducers/definitions";
 import { useAppDispatch } from "./reducers";
