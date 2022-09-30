@@ -1,101 +1,78 @@
-import { useEffect, useRef } from "react";
-import { AspectRatio, Box, Editable, EditableInput, EditablePreview, SimpleGrid } from "@chakra-ui/react";
-import { BOARD_SIZE, IndexedCell, IndexedLegalCell } from "./data";
-import { AppDispatch, useAppDispatch, useBoard } from "./reducers";
-import { Cursor, setIndex, useCursor } from "./reducers/cursor";
-import { setCube } from "./reducers/board";
-
-type BoardCellProps = IndexedCell & {
-    setValue: (_: IndexedLegalCell) => any
-    setNext: () => any
-    current: number | undefined
-    dispatch: AppDispatch
-}
-
-const LegalCell = ({ index, value, current, dispatch, setNext, setValue}: BoardCellProps) => {
-    const ref = useRef<HTMLInputElement>(null);
-    const onFocus = () => {
-        if (current !== index) {
-            dispatch(setIndex(index))
-        }
-    }
-    useEffect(() => {
-        if (current === index && document.activeElement !== ref.current) {
-            ref.current?.focus()
-        }
-    }, [current, index]
-    )
-
-    return <Box textAlign="center" >
-        <Box
-            ml={{ sm: "1px", base: "1" }}
-            textAlign="left"
-            fontSize={["8px", "small"]}
-            position='absolute'
-            top="0"
-            left="0">
-            {index}
-        </Box>
-        <Editable
-            placeholder="__"
-            value={value || ''}
-            onInput={(e: any) => {setValue({index, value: e.target.value}); if (e.target.value) setNext()}}
-            flex="1"
-            margin="auto"
-            position="absolute"
-            fontSize={{ sm: "2xl", base: "2xl" }}
-        >
-            <EditablePreview ref={ref} onFocus={onFocus} />
-            <EditableInput maxLength={1} />
-        </Editable>
-    </Box>
-
-}
-
-const BoardCell = ({value, ...props}: BoardCellProps): JSX.Element => {
-    return <AspectRatio
-        bg={value === null ? 'black' : 'inherit'}
-        ratio={1}
-        border="2px"
-        flex="1"
-    >
-        {value === null ?
-            <Box onFocus={() => props.dispatch(setIndex(undefined))}/> :
-            <LegalCell {...{value, ...props}} />
-        }
-    </AspectRatio>
-};
+import { useEffect } from "react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
+import { AXES, BOARD_SIZE, IndexedLegalCell } from "./data";
+import { useAppDispatch, useBoard } from "./reducers";
+import { Cursor, setDirection, setIndex, useCursor } from "./reducers/cursor";
+import { setCell } from "./reducers/board";
+import { useView } from "./reducers/view";
+import Cell from "./Cell";
 
 
-export default function Board(): JSX.Element {
+export default function Board() {
     const board = useBoard();
+    const { plane } = useView();
     const { index: current, direction }: Cursor = useCursor();
     const dispatch = useAppDispatch()
-    const setValue = ({index, value}: IndexedLegalCell) => dispatch(setCube({index, value}))
-    const setNext = () => dispatch(setIndex(current ? current + direction  : current))
+    const validateValue = (value: string) => (value === '' || (value !== ' ' && value >= 'א' && value <= "ת"))
+
+    const axes = AXES.filter(x => x !== plane);
+
+    useEffect(() => {
+        if (plane === direction) {
+            dispatch(setDirection(axes[0]))
+        }
+    }, [direction, plane, dispatch, axes])
+
+    const hasNext = (index: number) => {
+        const coordinates = [index % BOARD_SIZE, Math.floor(index / 7)];
+        if (coordinates[axes.findIndex(x => x === direction)] === (BOARD_SIZE - 1))
+        {
+            return false;
+        }
+        const locationDirection = (direction === axes[0]) ? 1 : BOARD_SIZE;
+        return board.at(index + locationDirection)?.value !== null
+    }
+
+    const setNext = (nextIndex: number, locationIndex: number) => {
+        if (hasNext(locationIndex)) {
+            dispatch(setIndex(nextIndex))
+        }
+        else {
+            dispatch(setIndex());
+            (document.activeElement as HTMLDivElement)?.blur();
+        }
+    }
+
+    const onChange = ({ index, value }: IndexedLegalCell, i: number) => {
+        if (validateValue(value)) {
+            dispatch(setCell({ index, value }))
+            if (value !== '') {
+                setNext(index + direction, i)
+            }
+        }
+    }
 
     return (
         <Box
-                    style={{aspectRatio: 1}}
-                    flex="75 1 57vmin"
-                    // minH={["80vmin", "60vmin"]}
-                    maxH="80vmin"
-                    alignSelf="center"
+            style={{ aspectRatio: 1 }}
+            flex="75 1 56vmin"
+            // minH={["80vmin", "60vmin"]}
+            maxH="80vmin"
+            alignSelf="center"
         >
-                <SimpleGrid
-                    style={{aspectRatio: 1}}
-                    dir="rtl"
-                    mx="auto"
-                    columns={BOARD_SIZE}
-                >
-                    {board.map((props) => <BoardCell
-                        key={props.index}
-                        current={current}
-                        setValue={setValue}
-                        setNext={setNext}
-                        dispatch={dispatch}
-                        {...props}
-                    />)}
-                </SimpleGrid>
+            <SimpleGrid
+                style={{ aspectRatio: 1 }}
+                dir="rtl"
+                mx="auto"
+                columns={BOARD_SIZE}
+            >
+                {board.map((props, i) => <Cell
+                    key={props.index}
+                    current={current}
+                    onChange={(value: string) => onChange({ index: props.index, value }, i)}
+                    setIndex={index => dispatch(setIndex(index))}
+                    {...props}
+                />)}
+            </SimpleGrid>
         </Box>);
 }

@@ -9,7 +9,7 @@ export const board = createSlice({
   name: 'board',
   initialState: getEmptyBoard(),
   reducers: {
-    setCube: (state, {payload: {index, value}}: PayloadAction<IndexedLegalCell>) => {
+    setCell: (state, {payload: {index, value}}: PayloadAction<IndexedLegalCell>) => {
       state[index - 1] = value;
       return state;
     },
@@ -27,7 +27,7 @@ export const board = createSlice({
 
 export const {
   resetBoard,
-  setCube,
+  setCell,
   clearBoard
 } = board.actions;
 

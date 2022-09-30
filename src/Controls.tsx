@@ -1,27 +1,17 @@
 import { Flex, FormLabel, Select, Spacer, Box, Button, ButtonGroup } from "@chakra-ui/react";
 import { ActionCreators } from "redux-undo";
 import ClearBoard from "./ClearBoard";
-import { AXES, Axis, BOARD_SIZE, Plane } from "./data";
+import { BOARD_SIZE, Plane } from "./data";
 import Display from "./Display";
 import { useAppDispatch } from "./reducers";
 import { useCanUndo } from "./reducers/board";
-import { setDirection, useCursor } from "./reducers/cursor";
 import { setLayer, setPlane, useView } from "./reducers/view";
 import ResetBoard from "./ResetBoard";
 
 export default function Controls(): JSX.Element {
     const { layer, plane } = useView();
     const dispatch = useAppDispatch();
-    const { direction } = useCursor();
     const canUndo = useCanUndo();
-
-    const changePlane = (newPlane: string) => {
-        dispatch(setPlane(newPlane));
-        if (newPlane === Plane[direction]) {
-            const newDirection = AXES.find(x => x !== Number(newPlane)) as Axis;
-            dispatch(setDirection(newDirection))
-        }
-    }
 
     return (
         <Flex
@@ -58,7 +48,7 @@ export default function Controls(): JSX.Element {
                         dir="rtl"
                         size="sm"
                         textAlign="left"
-                        onChange={e => changePlane(e.target.value)}
+                        onChange={e => dispatch(setPlane(e.target.value))}
                     >
                         <option value={Plane.YZ}>אופקי</option>
                         <option value={Plane.XZ}>אנכי</option>
