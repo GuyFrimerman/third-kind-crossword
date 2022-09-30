@@ -6,11 +6,13 @@ import { Cursor, setIndex, useCursor } from "./reducers/cursor";
 import { setCube } from "./reducers/board";
 
 type BoardCellProps = IndexedCell & {
-    onChange: (_: IndexedLegalCell) => void
+    setValue: (_: IndexedLegalCell) => any
+    setNext: () => any
     current: number | undefined
     dispatch: AppDispatch
 }
-const LegalCell = ({ index, value, current, dispatch, onChange }: BoardCellProps) => {
+
+const LegalCell = ({ index, value, current, dispatch, setNext, setValue}: BoardCellProps) => {
     const ref = useRef<HTMLInputElement>(null);
     const onFocus = () => {
         if (current !== index) {
@@ -23,12 +25,6 @@ const LegalCell = ({ index, value, current, dispatch, onChange }: BoardCellProps
         }
     }, [current, index]
     )
-
-    const handleChange = (value: string) => {
-        if (value.length !== 0) {
-            onChange({ index, value })
-        }
-    }
 
     return <Box textAlign="center" >
         <Box
@@ -43,8 +39,8 @@ const LegalCell = ({ index, value, current, dispatch, onChange }: BoardCellProps
         <Editable
             placeholder="__"
             defaultValue={value || ''}
-            onInput={(e: any) => {if (e.target.value === value) handleChange(e.target.value)}}
-            onChange={handleChange}
+            onInput={(e: any) => setValue({index, value: e.target.value})}
+            onSubmit={setNext}
             flex="1"
             margin="auto"
             position="absolute"
@@ -57,7 +53,7 @@ const LegalCell = ({ index, value, current, dispatch, onChange }: BoardCellProps
 
 }
 
-const BoardCell = ({ index, value, current, dispatch, onChange }: BoardCellProps): JSX.Element => {
+const BoardCell = ({value, ...props}: BoardCellProps): JSX.Element => {
     return <AspectRatio
         bg={value === null ? 'black' : 'inherit'}
         ratio={1}
@@ -65,8 +61,8 @@ const BoardCell = ({ index, value, current, dispatch, onChange }: BoardCellProps
         flex="1"
     >
         {value === null ?
-            <Box /> :
-            <LegalCell {...{ index, value, current, dispatch, onChange }} />
+            <Box onFocus={() => props.dispatch(setIndex(undefined))}/> :
+            <LegalCell {...{value, ...props}} />
         }
     </AspectRatio>
 };
@@ -76,11 +72,8 @@ export default function Board(): JSX.Element {
     const board = useBoard();
     const { index: current, direction }: Cursor = useCursor();
     const dispatch = useAppDispatch()
-
-    const onChange = (value: IndexedLegalCell) => {
-        dispatch(setIndex(current ? current + direction : current));
-        dispatch(setCube(value));
-    }
+    const setValue = ({index, value}: IndexedLegalCell) => dispatch(setCube({index, value}))
+    const setNext = () => dispatch(setIndex(current ? current + direction  : current))
 
     return (
         <Box
@@ -97,7 +90,8 @@ export default function Board(): JSX.Element {
                     {board.map((props) => <BoardCell
                         key={props.index}
                         current={current}
-                        onChange={onChange}
+                        setValue={setValue}
+                        setNext={setNext}
                         dispatch={dispatch}
                         {...props}
                     />)}
