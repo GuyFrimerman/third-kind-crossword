@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import undoable from "redux-undo";
 import { RootState, useAppSelector } from ".";
-import { getEmptyBoard, IndexedLegalCell } from "../data";
+import { getEmptyBoard, IndexedLegalCell, RawBoard } from "../data";
+import { View } from "./view";
 
 
-export const boardApi = createSlice({
+export const board = createSlice({
   name: 'board',
   initialState: getEmptyBoard(),
   reducers: {
@@ -11,13 +13,25 @@ export const boardApi = createSlice({
       state[index - 1] = value;
       return state;
     },
-    resetBoard: () => getEmptyBoard()
+    resetBoard: () => getEmptyBoard(),
+    clearBoard: (state,{payload: {layer, plane}}: PayloadAction<View>) => {
+        state.forEach((value, index) => {
+            if ( Math.floor(index / plane) % 7 === (layer - 1) && value !== null) {
+              state[index] = ''
+            }
+        });
+        return state
+    }
   }
 });
 
 export const {
   resetBoard,
-  setCube
-} = boardApi.actions;
+  setCube,
+  clearBoard
+} = board.actions;
 
-export const useRawBoard = () => useAppSelector((state: RootState) => state.board)
+export const useRawBoard: () => RawBoard = () => useAppSelector((state: RootState) => state.board.present)
+
+export const boardReducer = undoable(board.reducer)
+export const useCanUndo = () => useAppSelector((state: RootState) => state.board.past.length > 0)

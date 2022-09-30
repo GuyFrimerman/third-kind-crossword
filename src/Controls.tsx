@@ -1,14 +1,19 @@
-import { Flex, FormLabel, Select, Spacer, Box } from "@chakra-ui/react";
+import { Flex, FormLabel, Select, Spacer, Box, Button, ButtonGroup } from "@chakra-ui/react";
+import { ActionCreators } from "redux-undo";
+import ClearBoard from "./ClearBoard";
 import { AXES, Axis, BOARD_SIZE, Plane } from "./data";
 import Display from "./Display";
 import { useAppDispatch } from "./reducers";
+import { clearBoard, useCanUndo } from "./reducers/board";
 import { setDirection, useCursor } from "./reducers/cursor";
 import { setLayer, setPlane, useView } from "./reducers/view";
+import ResetBoard from "./ResetBoard";
 
-export default function ChooseBoard(): JSX.Element {
+export default function Controls(): JSX.Element {
     const { layer, plane } = useView();
     const dispatch = useAppDispatch();
     const { direction } = useCursor();
+    const canUndo = useCanUndo();
 
     const changePlane = (newPlane: string) => {
         dispatch(setPlane(newPlane));
@@ -25,10 +30,12 @@ export default function ChooseBoard(): JSX.Element {
             justify="stretch"
             flex="0 0"
             w={["80vmin", "65vmin"]}
+            mt="3"
+            alignSelf="center"
         >
             <Box
-            w={["20vmin", "10em"]}
-            h={["20vmin", "10em"]}
+                w={["20vmin", "10em"]}
+                h={["20vmin", "10em"]}
             >
                 <Display {...{ layer, plane }} />
             </Box>
@@ -45,6 +52,7 @@ export default function ChooseBoard(): JSX.Element {
                     <FormLabel fontSize="sm">מישור</FormLabel>
                     <Spacer />
                     <Select
+                        variant="outline"
                         value={plane}
                         id="plane"
                         dir="rtl"
@@ -71,6 +79,16 @@ export default function ChooseBoard(): JSX.Element {
                         {Array.from(Array(BOARD_SIZE)).map((_, i) => <option key={i} value={i + 1}>{i + 1}</option>)}
                     </Select>
                 </Flex>
+                <ButtonGroup isAttached variant="outline" colorScheme="blackAlpha"  size="xs" ms="auto">
+                    <Button
+                        disabled={!canUndo}
+                        onClick={() => dispatch(ActionCreators.undo())}
+                    >
+                        אחורה
+                    </Button>
+                    <ClearBoard/>
+                    <ResetBoard/>
+                </ButtonGroup>
             </Flex>
         </Flex>
     );
