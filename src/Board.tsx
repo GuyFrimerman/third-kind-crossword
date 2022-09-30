@@ -38,9 +38,8 @@ const LegalCell = ({ index, value, current, dispatch, setNext, setValue}: BoardC
         </Box>
         <Editable
             placeholder="__"
-            defaultValue={value || ''}
-            onInput={(e: any) => setValue({index, value: e.target.value})}
-            onSubmit={setNext}
+            value={value || ''}
+            onInput={(e: any) => {setValue({index, value: e.target.value}); if (e.target.value) setNext()}}
             flex="1"
             margin="auto"
             position="absolute"
@@ -77,9 +76,11 @@ export default function Board(): JSX.Element {
 
     return (
         <Box
-                    w={["80vmin", "65vmin"]}
                     style={{aspectRatio: 1}}
-                    flex="0 0 "
+                    flex="75 1 57vmin"
+                    // minH={["80vmin", "60vmin"]}
+                    maxH="80vmin"
+                    alignSelf="center"
         >
                 <SimpleGrid
                     style={{aspectRatio: 1}}

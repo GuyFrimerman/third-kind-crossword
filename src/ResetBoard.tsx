@@ -1,24 +1,27 @@
 import { RepeatIcon } from "@chakra-ui/icons"
 import { useDisclosure, Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogHeader, AlertDialogBody, AlertDialogFooter } from "@chakra-ui/react"
 import { useRef } from "react"
+import { ActionCreators } from "redux-undo"
 import { useAppDispatch } from "./reducers"
-import { resetBoard } from "./reducers/board"
+import { resetBoard, useRawBoard } from "./reducers/board"
 
   
 export default function ResetBoard() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = useRef<any>()
     const dispatch = useAppDispatch();
+    const isEmpty = useRawBoard().every(x => x === '' || x === null)
     
     const onReset = () => {
-        dispatch(resetBoard());
+        dispatch(resetBoard())
+        dispatch(ActionCreators.clearHistory());
         onClose();
     };
 
     return (
       <>
-        <Button onClick={onOpen}>
-                <RepeatIcon /> התחל מחדש 
+        <Button onClick={onOpen} isDisabled={isEmpty}>
+          נקה הכל
         </Button>
   
         <AlertDialog

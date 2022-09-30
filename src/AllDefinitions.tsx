@@ -20,26 +20,21 @@ const axes = [
 ]
 
 export default function AllDefinitions() {
-    const [onlyVisible, setVisible] = useState(true);
+    const [onlyVisible, setVisible] = useState(false);
     const { layer, plane } = useView();
 
     const isRelevant = (index: number) => Math.floor((index - 1) / plane) % BOARD_SIZE === layer - 1;
 
     return <Flex
-        flex="1 0"
-        minH="5em"
+        flex="3 0" 
+        minH="10ch"
+        ms={["initial", "10"]}
+        minW={["initial", "30ch"]}
+        justify="stretch"
         direction="column"
         align="stretch"
-        minW={["initial", "30ch"]}
-        ms={["initial", "10"]}
-    >
-        <Flex
-        dir="rtl"
-        direction="row-reverse"
-        wrap="wrap"
-        justify="space-between"
-        >
-            <HStack mx="3">
+         >
+            <HStack ms="auto">
                 <FormLabel
                     as="h2">
                     כל ההגדרות
@@ -48,29 +43,27 @@ export default function AllDefinitions() {
                     onChange={() => setVisible(!onlyVisible)}
                     isChecked={onlyVisible} />
             </HStack>
-        </Flex>
-        <Flex
-            textAlign="right"
-            overflowY="auto"
-            direction="column"
-            align="start"
-            justify="start"
-            w="100%"
-        >
-            {
-                axes
-                    .filter(({ axis }) => onlyVisible || axis !== plane as number)
-                    .map(({ axis, header }) => (
-                        <Definitions
-                            key={axis}
-                            axis={axis}
-                            header={header}
-                            plane={plane}
-                            isRelevant={(x => onlyVisible || isRelevant(x))}
-                        />
-                    )
-                    )
-            }
-        </Flex>
+            <Flex
+                textAlign="right"
+                overflowY="auto"
+                direction="column"
+                align="start"
+                justify="start"
+            >
+                {
+                    axes
+                        .filter(({ axis }) => onlyVisible || axis !== plane as number)
+                        .map(({ axis, header }) => (
+                            <Definitions
+                                key={axis}
+                                axis={axis}
+                                header={header}
+                                plane={plane}
+                                isRelevant={(x => onlyVisible || isRelevant(x))}
+                            />
+                        )
+                        )
+                }
+            </Flex>
     </Flex>;
 }

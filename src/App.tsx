@@ -3,7 +3,7 @@ import reducers from "./reducers"
 import { Provider } from "react-redux"
 import Info from "./Info"
 import Board from "./Board"
-import ChooseBoard from "./ChooseBoard"
+import Controls from "./Controls"
 import AllDefinitions from "./AllDefinitions"
 import { PersistGate } from "redux-persist/integration/react"
 import RandomDisplay from "./RandomDisplay"
@@ -31,15 +31,15 @@ const RootApp = () => (
       dir="rtl"
       direction="column"
       justify="space-between"
-      alignContent="space-around"
+      alignContent="stretch"
       wrap="wrap"
-      h={["85vh", "90vh"]}
+      h="90vh"
       w="90vw"
       m="auto"
       mt="15"
     >
       <Board />
-      <ChooseBoard />
+      <Controls />
       <AllDefinitions />
     </Flex>
   </Flex>
@@ -50,7 +50,7 @@ const globalTheme = extendTheme({
     global: {
       body: {
         bgColor: 'yellow.50',
-        overscrollBehaviorY: 'contain'
+        overscrollBehaviorY: 'none'
       }
     }
   },
