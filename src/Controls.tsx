@@ -4,7 +4,7 @@ import ClearBoard from "./ClearBoard";
 import { AXES, Axis, BOARD_SIZE, Plane } from "./data";
 import Display from "./Display";
 import { useAppDispatch } from "./reducers";
-import { clearBoard, useCanUndo } from "./reducers/board";
+import { useCanUndo } from "./reducers/board";
 import { setDirection, useCursor } from "./reducers/cursor";
 import { setLayer, setPlane, useView } from "./reducers/view";
 import ResetBoard from "./ResetBoard";
